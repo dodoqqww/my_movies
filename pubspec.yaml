@@ -20,18 +20,26 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+dependency_overrides:
+  intl: 0.17.0
+
 dependencies:
   flutter:
     sdk: flutter
 
-  #base imports
+  # base imports
   # Import the provider package.
-  provider: ^4.3.2
+  provider: ^5.0.0
   #scale
   responsive_framework: ^0.0.7
   #language
-  intl: ^0.16.1
-  intl_translation: ^0.17.9
+  intl: ^0.17.0
+  intl_translation: ^0.17.10+1
+
+  #for services
+  get_it: ^6.0.0
+
+
   flutter_localizations:
     sdk: flutter
 

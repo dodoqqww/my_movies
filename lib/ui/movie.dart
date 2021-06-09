@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_movies/api/api_client.dart';
-import 'package:my_movies/api/entites/error.dart';
-import 'package:my_movies/api/entites/movie_info.dart';
+
 import 'package:my_movies/common/textstyles.dart';
-import 'package:my_movies/models/movie.dart';
+import 'package:my_movies/providers/movie_provider.dart';
+import 'package:my_movies/services/movie_entites/error.dart';
+import 'package:my_movies/services/movie_entites/movie_info.dart';
 import 'package:my_movies/ui/widgets/error.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,7 @@ class Movie extends StatelessWidget {
       body: Container(
           padding: EdgeInsets.all(10),
           child: FutureBuilder<Object>(
-            future: fetchMovie(context.watch<MovieModel>().selectedFilm),
+            future: context.watch<MovieProvider>().fetchMovie(),
             builder: (context, snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {

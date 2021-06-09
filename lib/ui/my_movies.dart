@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_movies/api/api_client.dart';
-import 'package:my_movies/api/entites/error.dart';
-import 'package:my_movies/api/entites/search.dart';
 import 'package:my_movies/common/textstyles.dart';
-import 'package:my_movies/models/movie.dart';
+import 'package:my_movies/providers/movie_provider.dart';
+import 'package:my_movies/services/movie_entites/error.dart';
+import 'package:my_movies/services/movie_entites/search.dart';
 import 'package:my_movies/ui/widgets/error.dart';
 import 'package:provider/provider.dart';
 
@@ -47,10 +46,10 @@ class _MySearchBar extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        trailing: FlatButton(
+        trailing: TextButton(
           child: Text("Search"),
           onPressed: () =>
-              context.read<MovieModel>().pushSearch(_myController.text),
+              context.read<MovieProvider>().fetchSearch(_myController.text),
         ),
         title: TextField(
           controller: _myController,
@@ -70,22 +69,22 @@ class _MySearchResult extends StatelessWidget {
   Widget build(BuildContext context) {
     print("result build");
     return Container(
-      padding: EdgeInsets.only(top: 10),
-      child: FutureBuilder<Object>(
-        future: fetchSearch(context.watch<MovieModel>().search),
-        builder: (context, snapshot) {
-          if (snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data is SearchResult) {
-              return _ResultList(results: snapshot.data as SearchResult);
-            } else {
-              return ErrorTextWidget(error: snapshot.data as ApiError);
-            }
-          }
-          return Center(child: CircularProgressIndicator());
-        },
-      ),
-    );
+        padding: EdgeInsets.only(top: 10),
+        child: condition(context.watch<MovieProvider>().searchResult));
+  }
+
+  Widget condition(Object object) {
+    Widget widget;
+
+    if (object is SearchResult) {
+      widget = _ResultList(results: object);
+    } else if (object is ApiError) {
+      widget = ErrorTextWidget(error: object);
+    } else {
+      widget = Center(child: CircularProgressIndicator());
+    }
+
+    return widget;
   }
 }
 
@@ -175,9 +174,9 @@ class _ResultCard extends StatelessWidget {
                         SizedBox(
                           width: 50,
                         ),
-                        FlatButton(
+                        TextButton(
                           onPressed: () => {
-                            context.read<MovieModel>().selectedFilm =
+                            context.read<MovieProvider>().selectedFilm =
                                 result.imdbID,
                             Navigator.pushNamed(context, "/movie")
                           },

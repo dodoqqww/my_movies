@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:my_movies/services/service_locator.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'common/theme.dart';
 import 'generated/l10n.dart';
-import 'models/movie.dart';
+import 'providers/movie_provider.dart';
 import 'ui/movie.dart';
 import 'ui/my_movies.dart';
 
 void main() {
+  setupServiceLocator();
   runApp(MyApp());
 }
 
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
     // Using MultiProvider is convenient when providing multiple objects.
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => MovieModel()),
+        ChangeNotifierProvider(create: (context) => MovieProvider()),
       ],
       child: MaterialApp(
         // scale

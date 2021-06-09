@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_movies/api/entites/error.dart';
+import 'package:my_movies/services/movie_entites/error.dart';
 
 class ErrorTextWidget extends StatelessWidget {
   const ErrorTextWidget({
